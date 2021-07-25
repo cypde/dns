@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+	
+	</head>
+	<body>
+		
+	<div id="app">
+	  <p>{{ message  }}</p>
+	  <input v-model="message ">
+	</div>
+	
+	<script type="text/javascript">
+	var app = new Vue({
+	  el: '#app',
+	  data: {
+	   message : 'Hello Vue!'
+	  },
+	  mounted () {
+	      // axios  
+	      //   .get('https://bird.ioliu.cn/v1/?url=https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxfef6812e9ad4c79a&secret=68b8fcb4e8cbfe4fc4db989cbe6d7ed2')
+	      //   .then(response => (this.message = response.data.access_token))
+	      //   .catch(function (error) { // 请求失败处理
+	      //     console.log(error);
+	      //   });
+		axios.post('https://api.weixin.qq.com/tcb/databasequery?access_token=47__1eJJHeyA-4S9-OfQGtpO_iZm0MUShkvhgNfNA-XetypQBDQ52tKKE_YX6w8r-MohITJ99JAkxGaj0TevpH3jSeUuCi-AFOme2xSGVWxgvlC9q5kSVV5UiHOmOMyAd8h2JXi0RvR4Ikd8XihJRBiAAATBL', 
+		{
+		   "env":"cypde-9ghiqu9vb04f9232",
+		   "query":"db.collection(\"jk\").where({xuehao:\"B18040318\"}).get()",
+		}
+		  )
+		  .then(function (response) {
+		    console.log(response.data);
+		  })
+		  .catch(function (error) {
+		    console.log(error);
+		  });
+	    }
+	})
+	</script>
+	
+	</body>
+</html>
