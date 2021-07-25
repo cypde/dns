@@ -11,8 +11,7 @@
 	<body>
 		
 	<div id="app">
-	  <p>{{ message  }}</p>
-	  <input v-model="message ">
+	  <input v-model="message">
 	</div>
 	
 	<script type="text/javascript">
@@ -23,17 +22,10 @@
 	  },
 	  mounted () {
 	      // axios  
-	      //   .get('https://bird.ioliu.cn/v1/?url=https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxfef6812e9ad4c79a&secret=68b8fcb4e8cbfe4fc4db989cbe6d7ed2')
-	      //   .then(response => (this.message = response.data.access_token))
-	      //   .catch(function (error) { // 请求失败处理
-	      //     console.log(error);
-	      //   });
-		axios.post('https://api.weixin.qq.com/tcb/databasequery?access_token=47__1eJJHeyA-4S9-OfQGtpO_iZm0MUShkvhgNfNA-XetypQBDQ52tKKE_YX6w8r-MohITJ99JAkxGaj0TevpH3jSeUuCi-AFOme2xSGVWxgvlC9q5kSVV5UiHOmOMyAd8h2JXi0RvR4Ikd8XihJRBiAAATBL', 
+		axios.get('https://service-9s2q35d7-1258533339.bj.apigw.tencentcs.com/release/dnsCheck', 
 		{
-		   "env":"cypde-9ghiqu9vb04f9232",
-		   "query":"db.collection(\"jk\").where({xuehao:\"B18040318\"}).get()",
-		}
-		  )
+		   "url":this.message
+		})
 		  .then(function (response) {
 		    console.log(response.data);
 		  })
