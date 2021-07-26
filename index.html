@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="免费二级域名 免费域名 二级域名">
+		<meta name="keywords" content="免费二级域名,免费域名,二级域名,免费DNS,dns">
+		<meta name="author" content="76S.TOP">
+		<title>免费二级域名分发</title>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+	</head>
+	<body>
+
+		<div id="app">
+			<!-- 	<el-row>
+			<input v-model="message"> 
+			<el-button round @click="dns">查询</el-button>
+		</el-row> -->
+			<!-- 		<div style="margin-top: 15px;">
+		  <el-input placeholder="请输入内容" v-model="input" class="input-with-select">
+			  
+		    <el-select v-model="select" slot="prepend" placeholder="请选择">
+		      <el-option label="A" value="1"></el-option>
+		      <el-option label="CNAME" value="2"></el-option>
+		    </el-select>
+			<div slot="append">
+				<el-button>.76s.top</el-button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<el-button icon="el-icon-search" @click='dns'></el-button>
+			</div>
+		  </el-input>	 
+		</div> -->
+			</br></br>
+			<h1 style="text-align: center;">二级备案域名免费分发</h1>
+			<h5 style="text-align: center;">域名76s.top已经备案，请勿绑定违法犯罪网站！(查询需要时间请耐心等待)</h5>
+			</br></br></br>
+			<div v-if="isSuccess">
+				<el-alert center title="可以使用此域名" type="success" show-icon>
+				</el-alert>
+			</div>
+			<div v-if="isError">
+				<el-alert center title="此域名已经被使用" type="error" show-icon>
+				</el-alert>
+			</div>
+			</br></br>
+
+			<div style="text-align:center;
+			display: flex;
+			align-items: center;
+			">
+				<div style="width: 260px;">解析类型：</div>
+				<el-select v-model="select">
+					<el-option label="A" value="A"></el-option>
+					<el-option label="CNAME" value="CNAME"></el-option>
+				</el-select>
+
+				<div style="width: 260px;">二级域名：</div>
+				<el-input placeholder="请输入域名" v-model="input1" class="input-with-select" style="width: 500px;"
+					value="www" @keyup.native="btKeyUp" @keydown.native="btKeyUp"></el-input>
+
+
+
+				<el-button style="width: 180px;">.76s.top</el-button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+				<div style="width: 180px;" style="width: 500px;">目标：</div>
+				<el-input placeholder="请输入解析目标" v-model="input2" class="input-with-select" value="1.1.1.1"
+					@keyup.native="btKeyUp" @keydown.native="btKeyUp"></el-input>
+
+				<el-button type="primary" @click='dns' v-loading.fullscreen.lock="fullscreenLoading"
+					element-loading-text="拼命加载中">
+					查询
+				</el-button>
+
+
+			</div>
+
+			</br></br></br>
+
+			<div style="text-align: center;" v-if="textState">域名:{{input1}}.76s.top所解析的信息如下:{{ text }}</div>
+		</div>
+
+		<script type="text/javascript">
+			var app = new Vue({
+				el: '#app',
+				data: {
+					// message : 'yx',
+					input1: '',
+					input2: '',
+					select: 'A',
+					isSuccess: false,
+					isError: false,
+
+					text: '',
+					textState: false,
+
+					fullscreenLoading: false
+
+				},
+				methods: {
+					dns: function() {
+						var that = this
+						var pattern1 = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
+						var pattern2 =
+							/((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/;
+						var pattern3 = /^[a-zA-Z]+$/;
+						if (pattern1.test(that.input2) || pattern2.test(that.input2) && pattern3.test(that.input1)) {
+							that.fullscreenLoading = true;
+							axios.get(
+									'https://bird.ioliu.cn/v2?url=https://service-9s2q35d7-1258533339.bj.apigw.tencentcs.com/release/dnsCheck?url=' +
+									this.input1)
+								.then(function(response) {
+									if (response.data.length != 0) {
+										that.isError = true
+										setTimeout(() => {
+											that.isError = false
+										}, 2000)
+										that.$data.text = response.data
+										that.textState = true
+										that.fullscreenLoading = false;
+									} else {
+										that.textState = false
+										that.isSuccess = true
+										setTimeout(() => {
+											that.isSuccess = false
+										}, 2000)
+										that.fullscreenLoading = false;
+										that.open();
+									}
+									// console.log(response.data);
+
+								})
+								.catch(function(error) {
+									console.log(error);
+								});
+						} else {
+							console.log(that.input1)
+							alert("请动脑后再输入");
+						}
+
+					},
+
+					open() {
+						var that = this;
+						that.$confirm('此操作将此' + that.$data.input1 + '.76s.top解析至' + that.$data.input2, '是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+						}).then(() => {
+							that.$message({
+								type: 'success',
+								message: '添加解析成功!'
+							});
+							axios.get(
+									'https://bird.ioliu.cn/v2?url=https://service-9s2q35d7-1258533339.bj.apigw.tencentcs.com/release/dnsInset?url=' +
+									that.$data.input1 +
+									'&target=' + that.$data.input2 + '&type=' + that.$data.select)
+								.then(function(response) {
+									console.log(response.data);
+								});
+						}).catch(() => {
+							that.$message({
+								type: 'info',
+								message: '已取消解析'
+							});
+						});
+					},
+					//限制输入特殊字符
+					btKeyUp(e) {
+						e.target.value = e.target.value.replace(/[^\w\.\/]/ig, '');
+
+					}
+				}
+			});
+		</script>
+		<script>
+			window.onload = function() {
+				document.onkeydown = function() {
+					var e = window.event || arguments[0];
+					if (e.keyCode == 123) {
+						alert("需要源码，联系作者");
+						return false;
+					} else if ((e.ctrlKey) && (e.shiftKey) && (e.keyCode == 73)) {
+						alert("需要源码，联系作者");
+						return false;
+					}
+				};
+				document.oncontextmenu = function() {
+					alert("需要源码，联系作者");
+					return false;
+				}
+			}
+			window.addEventListener("keydown", function(e) {
+				//可以判断是不是mac，如果是mac,ctrl变为花键
+				//event.preventDefault() 方法阻止元素发生默认的行为。
+				if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+					e.preventDefault();
+					// Process event...
+					document.getElementById("test").innerHTML = "ctrl+s成功";
+				}
+			}, false);
+		</script>
+		<style type="text/css">
+			.el-select .el-input {
+				width: 130px;
+			}
+
+			.input-with-select .el-input-group__prepend {
+				background-color: #fff;
+			}
+		</style>
+
+	</body>
+</html>
