@@ -71,7 +71,7 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 				<div style="width: 180px;" style="width: 500px;">目标：</div>
-				<el-input placeholder="请输入解析目标" v-model="input2" class="input-with-select" value="1.1.1.1"
+				<el-input placeholder="请输入解析目标(只能输入IP或域名)" v-model="input2" class="input-with-select" value="1.1.1.1"
 					@keyup.native="btKeyUp" @keydown.native="btKeyUp"></el-input>
 
 				<el-button type="primary" @click='dns' v-loading.fullscreen.lock="fullscreenLoading"
