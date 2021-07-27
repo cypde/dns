@@ -81,7 +81,9 @@
 
 
 			</div>
-
+			<h5 style="text-align: center;">小提示：</h5>	
+			<h5 style="text-align: center;">A类型：目标只能为IP</h5>	
+			<h5 style="text-align: center;">CNAME类型：目标只能为域名</h5>	
 			</br></br></br>
 
 			<div style="text-align: center;" v-if="textState">域名:{{input1}}.76s.top所解析的信息如下:{{ text }}</div>
@@ -114,7 +116,7 @@
 						if (pattern1.test(that.input2) || pattern2.test(that.input2) && pattern3.test(that.input1)) {
 							that.fullscreenLoading = true;
 							axios.get(
-									'https://bird.ioliu.cn/v2?url=https://service-9s2q35d7-1258533339.bj.apigw.tencentcs.com/release/dnsCheck?url=' +
+									'https://bird.ioliu.cn/v2?url=https://service-8ca71ht3-1258533339.bj.apigw.tencentcs.com/release//dnsCheck?url=' +
 									this.input1)
 								.then(function(response) {
 									if (response.data.length != 0) {
@@ -154,16 +156,27 @@
 							cancelButtonText: '取消',
 							type: 'warning'
 						}).then(() => {
-							that.$message({
-								type: 'success',
-								message: '添加解析成功!'
-							});
+							that.fullscreenLoading = true;
 							axios.get(
-									'https://bird.ioliu.cn/v2?url=https://service-9s2q35d7-1258533339.bj.apigw.tencentcs.com/release/dnsInset?url=' +
+									'https://bird.ioliu.cn/v2?url=https://service-8ca71ht3-1258533339.bj.apigw.tencentcs.com/release/dnsInsert?url=' +
 									that.$data.input1 +
 									'&target=' + that.$data.input2 + '&type=' + that.$data.select)
 								.then(function(response) {
 									console.log(response.data);
+									
+									if (response.data.code = 200 && response.data.msg == "成功") {
+										that.fullscreenLoading = false;
+										that.$message({
+											type: 'success',
+											message: '添加解析成功!'
+										});
+									}else{
+										that.fullscreenLoading = false;
+										that.$message({
+											type: 'error',
+											message: '添加解析失败!请仔细检查后重试'
+										});
+									}
 								});
 						}).catch(() => {
 							that.$message({
